@@ -22,9 +22,10 @@ VisualDB is a project developed as a part of the course "4TIV902U Management of 
 ### Sprint 1 (Weeks 40-44)
 
 In the first sprint, which lasted for four weeks, we conducted extensive research to identify available options for visualizing decision boundaries. We explored various frameworks and libraries to select the most suitable one for our project.
+
+
 ![Sprint1 Demo](https://jm-pt.eu/wp-content/uploads/2023/11/sprint1demo.gif)
 
-### Current Implementation
 
 The current implementation of the VisualDB project utilizes the following technologies:
 
@@ -41,7 +42,6 @@ Then call the panel app by doing:
 
 ```
 panel serve visualDBdummy_sprint1.py --show --autoreload
-
 ```
 
 ### Data Generation
