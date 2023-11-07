@@ -32,7 +32,7 @@ The current implementation of the VisualDB project utilizes the following techno
 - **3D Visualization**: We use Plotly's `scatter3D` for rendering the 3D visualization of decision boundaries.
 - **User Interface**: We employ the Panel ([Documentation](https://panel.holoviz.org/getting_started/build_app.html)) library to create an interactive interface that can be accesesd in a web browser, allowing users to adjust various parameters.
 
-In order to run the dummy implementation of the first srpint install the environment with conda by doing 
+In order to run the dummy implementation of the first srpint install the environment (tested on Python 3.8.18) with conda by doing 
 
 ```
 conda env create -f visualDB.yml
