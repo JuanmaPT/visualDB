@@ -1,8 +1,9 @@
-# VisualDB
-
+> # VisualDB
+---
 **Course**: 4TIV902U Management of IT Projects (Image Processing and Computer Vision MSc)  
 **University**: Université de Bordeaux  
 **Project Manager**: Prof. Fabien Baldacci
+---
 
 ## Project Overview
 
@@ -24,7 +25,20 @@ In the first sprint, which lasted for four weeks, we conducted extensive researc
 The current implementation of the VisualDB project utilizes the following technologies:
 
 - **3D Visualization**: We use Plotly's `scatter3D` for rendering the 3D visualization of decision boundaries.
-- **User Interface**: We employ the Panel library to create an interactive interface, allowing users to adjust various parameters.
+- **User Interface**: We employ the Panel ([Documentation](https://panel.holoviz.org/getting_started/build_app.html)) library to create an interactive interface that can be accesesd in a web browser, allowing users to adjust various parameters.
+
+In order to run the dummy implementation of the first srpint install the environment with conda by doing 
+
+```
+conda env create -f environment.yml
+```
+
+Then call the panel app by doing:
+
+```
+panel serve visualDBdummy_sprint1.py --show --autoreload
+
+```
 
 ### Data Generation
 
