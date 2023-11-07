@@ -1,8 +1,11 @@
 > # VisualDB
+
 ---
-*Course*: 4TIV902U Management of IT Projects (Image Processing and Computer Vision MSc)  
-*University*: Université de Bordeaux  
-*Project Manager*: Prof. Fabien Baldacci
+
+Course: 4TIV902U Management of IT Projects (Image Processing and Computer Vision MSc)  
+University: Université de Bordeaux  
+Project Manager: Prof. Fabien Baldacci
+
 ---
 
 ## Project Overview
