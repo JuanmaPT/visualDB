@@ -35,7 +35,7 @@ The current implementation of the VisualDB project utilizes the following techno
 In order to run the dummy implementation of the first srpint install the environment with conda by doing 
 
 ```
-conda env create -f environment.yml
+conda env create -f visualDB.yml
 ```
 
 Then call the panel app by doing:
