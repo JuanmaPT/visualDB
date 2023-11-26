@@ -9,109 +9,165 @@ from panel.template.react import ReactTemplate
 import plotly.graph_objs as go
 import plotly.express as px
 import panel as pn
-import pandas as pd
+
 import os
+
+from DataLoader import *
+
+from DataLoader import *
 
 pn.extension("plotly")
 pn.config.sizing_mode = "stretch_width"
 
+# initialize data 
 
-def create_plot():
-    # Generate random 3D coordinates and attributes
-    np.random.seed(42)
-    num_points = 30
-    x = np.concatenate([
-        np.random.uniform(-5, -3, 10),  # Group 1
-        np.random.uniform(1, 3, 10),    # Group 2
-        np.random.uniform(6, 8, 10)     # Group 3
-    ])
-    y = np.random.uniform(-5, 5, num_points)
-    z = np.random.uniform(0, 10, num_points)
-    true_labels =  ["jeep"] * 10 + ["labrador"] * 10 + ["fountain"] * 10
-    classified_labels = [""] * num_points  # Initialize classified labels
-    image_paths = ["path_to_image_{}.jpg".format(i) for i in range(num_points)]
+path_dir_data=  "DataExtraction/Results/MexCulture142_Keras/" 
+path_dataset="Datasets/MexCulture142_Keras/"    
+selected_distribution = "All"
+selected_predictions = "Correct Predictions"
+#selected_predictions = "All"
 
-    # Create a DataFrame
-    dataframe = {
-        'x': x,
-        'y': y,
-        'z': z,
-        'true_label': true_labels,
-        'classified_label': classified_labels,
-        'image_path': image_paths
-    }
-    df = pd.DataFrame(dataframe)
+data = DataLoader(path_dir_data,
+                  path_dataset,
+                  selected_distribution, 
+                  #selected_predictions)
+)
+
+
+df= data.df
+
+# Callback function to update the plot and data when the widgets are changed
+def update_plot_and_data(event):
+    selected_distribution = distribution_selector.value
+    selected_predictions = prediction_selector.value 
+    print(selected_distribution,selected_predictions)
+
+    data = DataLoader(path_dir_data,
+                  path_dataset,
+                  selected_distribution, 
+                 )
+
+    plot_panel.object = create_plot(data.df).to_plotly_json()
+    image_pane.object = None  # Reset image when widgets change
+
+
+# widget declaration 
+distribution_selector = pn.widgets.Select(options=["Train", "Validation","All"], name="Select Distribution")
+dataset_selector = pn.widgets.Select(options=["MexCulture"], name="Select Datasets")
+#class_selector = pn.widgets.Select(options=["0", "1", "2"], name="Select Classes")
+prediction_selector = pn.widgets.Select(options=["Correct Predictions", "Incorrect Predictions", "All"], name="Select")
+
+
+
+# Callbacks for widget changes
+distribution_selector.param.watch(update_plot_and_data, "value")
+dataset_selector.param.watch(update_plot_and_data, "value")
+#class_selector.param.watch(update_plot_and_data, "value")
+prediction_selector.param.watch(update_plot_and_data, "value")
+
+
+def create_plot(df):
+    df['true_label'] = df['true_label'].apply(data.id2label)
+    df['classified_label']= df['classified_label'].apply(data.id2label)
+
+    hover_text = (
+        'True: ' + df['true_label'] +
+        '<br>Prediction: ' + df['classified_label'] +
+        '<br>Score: ' + df['score'].astype(str)
+    )
 
     # Define colors for each class
     colors = {
-        "jeep": "red",
-        "labrador": "blue",
-        "fountain": "green"
+        data.id2label("0"): "red",
+        data.id2label("1"): "blue",
+        data.id2label("2"): "green"
     }
+
+  
+    # Set opacity based on selected distribution
+    df['opacity'] = 1.0
+    # Update opacity based on selected distribution
+    if prediction_selector.value == "Correct Predictions":
+        df.loc[df['true_label'] != df['classified_label'], 'opacity'] = 0.3
+    elif prediction_selector.value == "Incorrect Predictions":
+        df.loc[df['true_label'] == df['classified_label'], 'opacity'] = 0.3
+    
 
     # Create the 3D scatter plot
     fig = go.Figure(
-        data = px.scatter_3d(df, x='x', y='y', z='z', color='true_label',
-                            color_discrete_map=colors,
-                            hover_name='true_label')
+        data=px.scatter_3d(
+            df, x='x', y='y', z='z',
+            color='true_label',
+            color_discrete_map= colors,
+            custom_data=[hover_text], 
+           
+        )
     )
 
     fig.update_layout(
         title="3D Scatter Plot",
-        autosize=True
+        autosize=True,
+        width=1200,
+        height=1000
+    ) 
+
+    # Update click events to display custom hover text
+    fig.update_traces(
+        marker=dict(size=5),
+        hovertemplate='%{customdata[0]}<extra></extra>',
+        
     )
+
     return fig
 
 
-
-
-
 def create_layout(plot):
+    plot_panel = pn.pane.Plotly(plot, config={"responsive": True})
+    image_panel = pn.pane.PNG(object=None, height=400, width=400) 
 
-    plot_panel = pn.pane.Plotly(plot, config={"responsive": True}, sizing_mode="stretch_both")
-    image_pane = pn.pane.JPG(object=None, height=400, width=400)
-
-    settings_panel = plot_panel.controls(jslink=True)
-
+    settings_panel = pn.WidgetBox(
+        dataset_selector,
+        distribution_selector,
+        prediction_selector,
+  
+    )  
+    
     template = ReactTemplate(title="Decision Boundary Visualizer Alpha")
     template.sidebar.append(settings_panel)
-    template.main[0:1, :] = image_pane
-    template.main[2:4, :] = plot_panel
-    return template, plot_panel, image_pane
+    template.main[:3, :6] = plot_panel
+    template.main[:3, 9:] = image_panel
+    return template, plot_panel, image_panel
 
 
 def create_app():
-    plot = create_plot()
+    df = data.df
+    plot = create_plot(df)
     return create_layout(plot)
 
 
-app, plot_panel, image_pane = create_app()
+app, plot_panel, image_panel = create_app()
 
 
 @pn.depends(plot_panel.param.click_data, watch=True)
 def update_image(click_data):
-    print('Helloooooooooo')
     print(click_data)
     if click_data is not None and 'points' in click_data:
         point_data = click_data['points'][0]
-        point_number = point_data['pointNumber']
-        hover_text = point_data['hovertext']
-        if hover_text == 'jeep':
-            image_filename = 'images\ILSVRC2012_val_00006062_n03594945.JPEG'
-            print('1')
-        if hover_text == 'labrador':
-            image_filename = 'images\ILSVRC2012_val_00018107_n02106662.JPEG'
-            print('2')
-        else:
-            image_filename = 'images\ILSVRC2012_val_00011075_n03388043.JPEG'
-            print('3')
+        print(point_data)
+        idx = df.loc[(df['x'] == point_data['x']) & (df['y'] == point_data['y']) & (df['z'] == point_data['z'])]
+        image_filename = idx['image_path'].tolist()[0]
+        image_filename=  image_filename.replace("/", "\\")
+        #image_filename=  image_filename.replace("\\", "/")
+        print(image_filename)
+    
         if os.path.exists(image_filename):
-            image_pane.object = image_filename
+            image_panel.object = image_filename
         else:
-            image_pane.object = None
+            print("Image file does not exist:", image_filename)
+            image_panel.object = None
+       
     else:
-        image_pane.object = None
-
-
+        image_panel.object = None
 
 app.servable()
+
