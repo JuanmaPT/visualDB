@@ -103,4 +103,4 @@ dependencies:
       - webencodings==0.5.1
       - werkzeug==3.0.1
       - xyzservices==2023.10.1
-prefix: C:\Users\juanm\anaconda3\envs\ITdev
+
