@@ -48,7 +48,7 @@ Extracted features are dynamically presented in a 3D space, offering enhanced vi
 
 Users can click on a data point to reveal the corresponding image in the Image Panel. Hovering over a point provides instant access to details such as the true class, predicted class, and prediction score. The selected image is highlighted in yellow
 
-![Demo](video_sample.mp4)
+![Demo](sample1.mp4)
 
 
 
