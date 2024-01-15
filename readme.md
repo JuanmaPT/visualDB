@@ -51,15 +51,12 @@ Users can click on a data point to reveal the corresponding image in the Image P
 ![Demo](sample1.mp4)
 
 
-https://github.com/JuanmaPT/visualDB/assets/81154745/fff260b6-fe3a-470e-84aa-0e1dda783743
 
 
 
-https://github.com/JuanmaPT/visualDB/assets/81154745/0ae962f1-b8a4-444a-8613-0e3723a556b2
+https://github.com/JuanmaPT/visualDB/assets/81154745/5038aa89-6557-4b60-ac67-8923e9469baa
 
 
-
-https://github.com/JuanmaPT/visualDB/assets/81154745/101b280c-2351-4f4d-9074-928a4da1f005
 
 
 
