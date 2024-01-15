@@ -21,11 +21,6 @@ The current implementation of the VisualDB project utilizes the following techno
 - **3D Visualization**: We use Plotly's `scatter3D` for rendering the 3D visualization of decision boundaries.
 - **User Interface**: We employ the Panel ([Documentation](https://panel.holoviz.org/getting_started/build_app.html)) library to create an interactive interface that can be accesesd in a web browser, allowing users to adjust various parameters.
 
-## Authors
-
-- Juan Manuel Peña
-- Blanca Hermosilla
-
 ## Demo
 
 https://github.com/JuanmaPT/visualDB/assets/81154745/5038aa89-6557-4b60-ac67-8923e9469baa
@@ -48,5 +43,11 @@ Upon clicking "Show Decision Boundary," users can opt to visualize either the po
 By selecting a single image and opting for "OOD Analysis," users gain insights into the model's robustness against Gaussian noise, motion blur, and brightness variations. An Out-of-Distribution (OOD) image panel with three tabs is generated, allowing users to manually select tabs corresponding to each perturbation and visualize their effects. Perturbation levels, ranging from 0 to 5, can be chosen.
 
 For a comprehensive analysis, users can choose to also display the decision boundary, visually assessing the impact of perturbations on a sample and observing its displacement from in-distribution samples. An informative warning alerts users when perturbations alter the classification result. Hovering over OOD samples reveals details such as true prediction, classification, and score, often exposing a degradation in the score compared to the original image. This feature provides a valuable tool for users to assess and understand the model's response to diverse perturbations in a manual and customizable manner.
+
+## Authors
+
+- Juan Manuel Peña
+- Blanca Hermosilla
+
 
 
